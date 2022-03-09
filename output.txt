@@ -1,0 +1,17 @@
+#fff
+#000
+transparent
+0
+rgba(255,255,255,0)
+rgba(0,0,0,.08)
+#e0e0e0
+#f3ca8c
+#e59819
+#eceb98
+#2d907f
+#f7f9fa
+#3e4143
+#6a6f73
+#d1d7dc
+#1c1d1f
+#5624d0
