@@ -31,7 +31,7 @@ export default function CssTransform() {
   function handleTransform() {
     let tempCss = inputCss;
     let tempColorsArr: any = [];
-    let generatedContentArea = document.querySelector('div.right-section > pre');
+    let generatedContentArea: any = document.querySelector('div.right-section > pre');
     if (generatedContentArea) {
       generatedContentArea.style.opacity = '0';
     }
