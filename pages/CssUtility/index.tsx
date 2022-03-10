@@ -36,8 +36,6 @@ export default function CssTransform() {
       generatedContentArea.style.opacity = '0';
     }
 
-
-
     var options = {
       withoutGrey: false, // set to true to remove rules that only have grey colors
       withoutMonochrome: false, // set to true to remove rules that only have grey, black, or white colors
@@ -123,14 +121,15 @@ export default function CssTransform() {
 
         <pre className="generated-css content-area slideInRight">
 
-          {colorArr && `:root &#123;` && colorArr.map((color: any, index) => {
+          {colorArr.length > 0 && <>{`:root {`}</>}
+          {colorArr.map((color: any, index) => {
             return (
               <div key={index}>
-                {color.key} : {color.value};         /* {color.count} ---- {color.original} */
+                {color.key}: {color.value};         /* {color.count} ---- {color.original} */
               </div>
             )
           })}
-          {colorArr.length > 0 && `&#125;`}
+          {colorArr.length > 0 && <>{`}`}</>}
           <br />
           {JSON.parse(JSON.stringify(outputCss, null, 2))}
         </pre>
