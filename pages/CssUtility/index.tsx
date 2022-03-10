@@ -8,10 +8,6 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-// function replaceAll(str, find, replace) {
-//   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-// }
-
 function replaceAll(str, find, replace) {
   return str.replaceAll(find, replace);
 }
@@ -19,6 +15,9 @@ function replaceAll(str, find, replace) {
 function countMatch(str, find) {
   return str.match(new RegExp(escapeRegExp(find), 'g'));
 }
+const uniqueArray = (arr) => arr.filter(function (item, pos) {
+  return arr.indexOf(item) == pos;
+})
 
 function sortColorBasedOnCount(a, b) {
   var countA = a.count;
@@ -62,9 +61,12 @@ export default function CssTransform() {
       colorFormat: 'hexString' // transform colors to one of the following formats: hexString, rgbString, percentString, hslString, hwbString, or keyword
     };
     let tempColors = extractor.fromCss(tempCss).filter((colorVal: any) => colorVal !== '0');
+    tempColors = uniqueArray(tempColors);
 
-    // console.log("tempColors", tempColors);
-
+    let hexColors = tempColors.filter((colorVal: any) => colorVal.indexOf('#') !== -1);
+    let otherThanHexColors = tempColors.filter((colorVal: any) => colorVal.indexOf('#') == -1);
+    hexColors.sort((a, b) => b.length - a.length)
+    tempColors = [...hexColors, ...otherThanHexColors];
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
       // var formattedNumber = ("0" + index).slice(-2);
