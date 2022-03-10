@@ -32,7 +32,6 @@ function sortColorBasedOnCount(a, b) {
   return 0;
 }
 
-
 function copyToClipBoard() {
   var copyText = document.getElementById("finalContent");
   navigator.clipboard.writeText(copyText!.innerText)
@@ -47,7 +46,6 @@ function copyToClipBoard() {
   });
 
 }
-
 
 export default function CssTransform() {
   const [inputCss, setInputCss] = useState(DefaultCssTemplate);
