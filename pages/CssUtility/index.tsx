@@ -8,27 +8,16 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
+// function replaceAll(str, find, replace) {
+//   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+// }
+
 function replaceAll(str, find, replace) {
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+  return str.replaceAll(find, replace);
 }
 
 function countMatch(str, find) {
   return str.match(new RegExp(escapeRegExp(find), 'g'));
-}
-
-function leftPad(number, targetLength) {
-  var output = number + '';
-  while (output.length < targetLength) {
-    output = '0' + output;
-  }
-  return output;
-}
-
-function searchReplace(str, word, newWord) {
-  if (word[0] === word[0].toUpperCase()) {
-    newWord = newWord[0].toUpperCase() + newWord.slice(1)
-  }
-  return str.replace(word, newWord)
 }
 
 function sortColorBasedOnCount(a, b) {
@@ -99,7 +88,7 @@ export default function CssTransform() {
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
       tempCss = replaceAll(tempCss, color, colorName);
-      tempCss = replaceAll(tempCss, `.${colorName}`, color);
+      // tempCss = replaceAll(tempCss, `.${colorName}`, color);
 
       // set Opacity 1 after 200ms
       setTimeout(() => {
