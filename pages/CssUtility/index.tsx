@@ -15,6 +15,14 @@ function countMatch(str, find) {
   return str.match(new RegExp(escapeRegExp(find), 'g'));
 }
 
+function leftPad(number, targetLength) {
+  var output = number + '';
+  while (output.length < targetLength) {
+    output = '0' + output;
+  }
+  return output;
+}
+
 function sortColorBasedOnCount(a, b) {
   var countA = a.count;
   let countB = b.count;
@@ -47,6 +55,9 @@ export default function CssTransform() {
 
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
+      // var formattedNumber = ("0" + index).slice(-2);
+      // let currIndex: any = formattedNumber // 01
+
       let color = colorVal.replace(/\s/g, '');
       let currCssVar = `--color__${index + 1}`;
       let colorName = `var(${currCssVar})`;
@@ -122,11 +133,35 @@ export default function CssTransform() {
         <pre className="generated-css content-area slideInRight">
 
           {colorArr.length > 0 && <>{`:root {`}</>}
+
           {colorArr.map((color: any, index) => {
             return (
-              <div key={index}>
-                {color.key}: {color.value};         /* {color.count} ---- {color.original} */
+              <div>
+                <span key={index} className="color-variables floatLeft">
+                  {color.key}: {color.original};
+                </span>
+                <span className="floatLeft">
+                     /* {color.count} */
+                </span>
+                <br />
               </div>
+            )
+          })}
+
+          <br />
+          {colorArr.length > 0 && <>{` /* Override with Rgba */`}</>}
+          <br /><br />
+          {colorArr.map((color: any, index) => {
+            return (
+              <>
+                <span key={index} className="color-variables floatLeft">
+                  {color.key}: {color.value};
+                </span>
+                <span className="floatLeft">
+                     /* {color.count} */
+                </span>
+                <br />
+              </>
             )
           })}
           {colorArr.length > 0 && <>{`}`}</>}

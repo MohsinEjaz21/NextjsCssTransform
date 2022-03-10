@@ -96,7 +96,14 @@ pre{
   border: 1px solid var(--color__1);
 }
 
+.color-variables{
+  min-width: 440px;
+  display: block;
+}
 
+.floatLeft{
+  float: left;
+}
 
 /* Lottie Animation CSS */
 
