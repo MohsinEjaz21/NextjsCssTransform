@@ -149,16 +149,16 @@ export default function CssTransform() {
 
         <pre id="finalContent" className="generated-css content-area slideInRight">
           <div>{colorArr.length > 0 && <>{`:root {`}</>}</div>
+
           {colorArr.map((color: any, index) => {
             return (
               <>
                 <div key={index} className="color-variables floatLeft">
                   {color.key}: {color.original};
                 </div>
-                <div >
-                     /* {color.count} */
+                <div>
+                  {` /*  ${color.count} */`}
                 </div>
-                {/* <br /> */}
               </>
             )
           })}
@@ -173,13 +173,12 @@ export default function CssTransform() {
                   {color.key}: {color.value};
                 </div>
                 <div >
-                     /* {color.count} */
+                  {` /* ${color.count} */`}
                 </div>
-                {/* <br /> */}
               </>
             )
           })}
-          {colorArr.length > 0 && <>{`}`}</>}
+          {colorArr.length > 0 && <div>{`}`}</div>}
           <br />
           {JSON.parse(JSON.stringify(outputCss, null, 2))}
         </pre>
