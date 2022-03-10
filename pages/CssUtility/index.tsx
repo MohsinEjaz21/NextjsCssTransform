@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DefaultCssTemplate } from '../../inputcss';
 var extractor = require('css-color-extractor');
-
+var Color = require('easy-color');
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -23,70 +23,101 @@ function sortColorBasedOnCount(a, b) {
   return 0;
 }
 
-
 export default function CssTransform() {
   const [inputCss, setInputCss] = useState(DefaultCssTemplate);
   const [outputCss, setOutputCss] = useState('');
   const [colorArr, setColorArr] = useState([]);
 
-  useEffect(() => {
+  function handleTransform() {
     let tempCss = inputCss;
     let tempColorsArr: any = [];
+    var options = {
+      withoutGrey: false, // set to true to remove rules that only have grey colors
+      withoutMonochrome: false, // set to true to remove rules that only have grey, black, or white colors
+      colorFormat: 'hexString' // transform colors to one of the following formats: hexString, rgbString, percentString, hslString, hwbString, or keyword
+    };
     let tempColors = extractor.fromCss(tempCss).filter((colorVal: any) => colorVal !== '0');
 
-    console.log("tempColors", tempColors);
+    // console.log("tempColors", tempColors);
 
-    tempColors.forEach((colorVal: any, index: number) => {
+
+    tempColors = tempColors.map((colorVal: any, index: number) => {
       let color = colorVal.replace(/\s/g, '');
       let currCssVar = `--color__${index + 1}`;
       let colorName = `var(${currCssVar})`;
       let matchColorLen = (countMatch(tempCss, color) || []).length
       let tempColorObj = {}
+
+      let parser = new Color(colorVal);
+      let rgbColor = parser.toRGBA();
+      // You can also add: # 0af, rgb (0, 170, 255), hsl (..., etc ...
+      // console.log({ "RGBA": parser.toRGBA(), "color": colorVal });
+      // parser.toHEX();
+
       tempColorObj['key'] = currCssVar;
-      tempColorObj['value'] = colorVal;
+      tempColorObj['value'] = rgbColor;
+      tempColorObj['original'] = colorVal;
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
       tempCss = replaceAll(tempCss, color, colorName);
+      return rgbColor;
     });
 
-    console.log(" NEW CSS ")
-    console.log(tempCss)
+    // console.log(" NEW CSS ")
+    // console.log(tempCss)
 
     tempColorsArr.sort(sortColorBasedOnCount);
     setOutputCss(tempCss);
     setColorArr(tempColorsArr);
+  }
+
+  useEffect(() => {
+    handleTransform()
     return () => { }
-  }, [inputCss])
+  }, [])
 
 
 
   return (
-    <>
+    <div className="container">
 
       {/* Text box for input css */}
+      <div className="svg hide" id="svg"></div>
 
-      <div className="split left">
+      <div className="left-section">
+        <div className="section-header">
+          <div className="heading-primary">
+            Enter Yours CSS
+          </div>
+          <button id="transformBtn" className="btn btn-primary" onClick={handleTransform}>
+            Transform (Click Me)
+          </button>
+        </div>
         <textarea
-          className="inputcss-textarea"
+          className="inputcss-textarea content-area"
           value={inputCss}
           onChange={(e) => setInputCss(e.target.value)}
         />
       </div>
-      <div className="split right">
-        <pre>
-          <code className="language-css">
-            :root &#123;
-            {colorArr.map((color: any, index) => {
-              return (
-                <div key={index}>
-                  {color.key} : {color.value};         /* {color.count} */
-                </div>
-              )
-            })}
-            &#125;
-            <br />
-            {JSON.parse(JSON.stringify(outputCss, null, 2))}
-          </code>
+      <div className="right-section" >
+        <div className="section-header">
+          <div className="heading-primary">
+            Dynamic CSS 🎉
+          </div>
+        </div>
+
+        <pre className="generated-css content-area">
+          :root &#123;
+          {colorArr.map((color: any, index) => {
+            return (
+              <div key={index}>
+                {color.key} : {color.value};         /* {color.count} ---- {color.original} */
+              </div>
+            )
+          })}
+          &#125;
+          <br />
+          {JSON.parse(JSON.stringify(outputCss, null, 2))}
         </pre>
 
 
@@ -94,7 +125,7 @@ export default function CssTransform() {
 
 
 
-    </>
+    </div>
   )
 }
 
