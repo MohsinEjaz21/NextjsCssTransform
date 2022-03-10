@@ -42,7 +42,7 @@ function copyToClipBoard() {
     text: "Your CSS is copied to clipboard",
     icon: "success",
     timer: 1000,
-    button: false
+    buttons: [false]
   });
 
 }
