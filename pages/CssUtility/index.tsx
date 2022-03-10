@@ -1,6 +1,6 @@
 import { useState } from "react";
 import swal from 'sweetalert';
-import { DefaultCssTemplate } from '../../inputcss';
+import { CssNamedColors, DefaultCssTemplate } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
 
@@ -9,7 +9,9 @@ function escapeRegExp(string) {
 }
 
 function replaceAll(str, find, replace) {
-  return str.replaceAll(find, replace);
+  // return str.replaceAll(find, replace);
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+
 }
 
 function countMatch(str, find) {
@@ -49,70 +51,82 @@ export default function CssTransform() {
 
   function handleTransform() {
     let tempCss = inputCss;
+    let namedColors = Object.keys(CssNamedColors);
+
+    tempCss = tempCss.split('\n').map(line => {
+
+      if (line.includes(':') && !line.includes('{')) {
+        line = line.replace(new RegExp(escapeRegExp("black"), 'g'), "#000000");
+
+        if (line.split(':')[0].indexOf('white') < 0) {
+          line = line.replace(new RegExp(escapeRegExp("white"), 'g'), "#ffffff");
+        }
+        if (line.includes('transparent')) {
+          line = line.replace(new RegExp(escapeRegExp("transparent"), 'g'), "rgba(0,0,0,0)");
+        }
+
+        namedColors.forEach(color => {
+          if (line.includes(color)) {
+            line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
+          }
+        })
+      }
+      return line;
+    }).join('\n');;
+
+
     let tempColorsArr: any = [];
     let generatedContentArea: any = document.querySelector('div.right-section > pre');
     if (generatedContentArea) {
       generatedContentArea.style.opacity = '0';
     }
-
-    var options = {
-      withoutGrey: false, // set to true to remove rules that only have grey colors
-      withoutMonochrome: false, // set to true to remove rules that only have grey, black, or white colors
-      colorFormat: 'hexString' // transform colors to one of the following formats: hexString, rgbString, percentString, hslString, hwbString, or keyword
-    };
     let tempColors = extractor.fromCss(tempCss).filter((colorVal: any) => colorVal !== '0');
     tempColors = uniqueArray(tempColors);
-
     let hexColors = tempColors.filter((colorVal: any) => colorVal.indexOf('#') !== -1);
     let otherThanHexColors = tempColors.filter((colorVal: any) => colorVal.indexOf('#') == -1);
     hexColors.sort((a, b) => b.length - a.length)
     tempColors = [...hexColors, ...otherThanHexColors];
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
-      // var formattedNumber = ("0" + index).slice(-2);
-      // let currIndex: any = formattedNumber // 01
-
       let color = colorVal.replace(/\s/g, '');
       let currCssVar = `--color__${index + 1}`;
       let colorName = `var(${currCssVar})`;
       let matchColorLen = (countMatch(tempCss, color) || []).length
       let tempColorObj = {}
-
       let parser = new Color(colorVal);
       let rgbColor = parser.toRGBA();
-      // You can also add: # 0af, rgb (0, 170, 255), hsl (..., etc ...
-      // console.log({ "RGBA": parser.toRGBA(), "color": colorVal });
-      // parser.toHEX();
 
+      // let findIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
+      // if (findIndex > -1) {
+      //   currCssVar = tempColorsArr[findIndex]['key'];
+      //   colorName = `var(${currCssVar})`;
+      //   tempColorsArr[findIndex]['count'] = tempColorsArr[findIndex]['count'] + matchColorLen;
+      // }
+
+      // else {
       tempColorObj['key'] = currCssVar;
       tempColorObj['value'] = rgbColor;
       tempColorObj['original'] = colorVal;
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
-      tempCss = replaceAll(tempCss, color, colorName);
-      // tempCss = replaceAll(tempCss, `.${colorName}`, color);
+      // }
 
-      // set Opacity 1 after 200ms
-      setTimeout(() => {
-        if (generatedContentArea) {
-          generatedContentArea.style.opacity = '1';
-        }
-      }, 200);
+      tempCss = replaceAll(tempCss, color, colorName);
+      tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
 
       return rgbColor;
     });
+
+    setTimeout(() => {
+      if (generatedContentArea) {
+        generatedContentArea.style.opacity = '1';
+      }
+    }, 200);
 
     tempColorsArr.sort(sortColorBasedOnCount);
     setOutputCss(tempCss);
     setColorArr(tempColorsArr);
   }
-
-  // useEffect(() => {
-  //   handleTransform()
-  //   return () => { }
-  // }, [])
-
-
 
   return (
     <div className="container">
@@ -191,16 +205,3 @@ export default function CssTransform() {
   )
 }
 
-
-// let colorsStringify = JSON.stringify(tempColorObj, null, 2)
-// const tempFormatedColors = colorsStringify.replace(/"([^"]+)":/g, '$1:').split(',').join(';');
-
-{/* {colors.map((color, index) => {
-        return (
-          <div key={index}>
-            <div style={{ backgroundColor: color }}>
-              {index} ----  {color}
-            </div>
-          </div>
-        )
-      })} */}
