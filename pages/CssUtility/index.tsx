@@ -98,8 +98,8 @@ export default function CssTransform() {
       tempColorObj['original'] = colorVal;
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
-      tempCss = searchReplace(tempCss, color, colorName);
-      // tempCss = searchReplace(tempCss, `.${colorName}`, color);
+      tempCss = replaceAll(tempCss, color, colorName);
+      tempCss = replaceAll(tempCss, `.${colorName}`, color);
 
       // set Opacity 1 after 200ms
       setTimeout(() => {
