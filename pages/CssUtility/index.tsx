@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DefaultCssTemplate } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
@@ -31,6 +31,13 @@ export default function CssTransform() {
   function handleTransform() {
     let tempCss = inputCss;
     let tempColorsArr: any = [];
+    let generatedContentArea = document.querySelector('div.right-section > pre');
+    if (generatedContentArea) {
+      generatedContentArea.style.opacity = '0';
+    }
+
+
+
     var options = {
       withoutGrey: false, // set to true to remove rules that only have grey colors
       withoutMonochrome: false, // set to true to remove rules that only have grey, black, or white colors
@@ -60,6 +67,14 @@ export default function CssTransform() {
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
       tempCss = replaceAll(tempCss, color, colorName);
+
+      // set Opacity 1 after 200ms
+      setTimeout(() => {
+        if (generatedContentArea) {
+          generatedContentArea.style.opacity = '1';
+        }
+      }, 200);
+
       return rgbColor;
     });
 
@@ -71,10 +86,10 @@ export default function CssTransform() {
     setColorArr(tempColorsArr);
   }
 
-  useEffect(() => {
-    handleTransform()
-    return () => { }
-  }, [])
+  // useEffect(() => {
+  //   handleTransform()
+  //   return () => { }
+  // }, [])
 
 
 
@@ -106,16 +121,16 @@ export default function CssTransform() {
           </div>
         </div>
 
-        <pre className="generated-css content-area">
-          :root &#123;
-          {colorArr.map((color: any, index) => {
+        <pre className="generated-css content-area slideInRight">
+
+          {colorArr && `:root &#123;` && colorArr.map((color: any, index) => {
             return (
               <div key={index}>
                 {color.key} : {color.value};         /* {color.count} ---- {color.original} */
               </div>
             )
           })}
-          &#125;
+          {colorArr.length > 0 && `&#125;`}
           <br />
           {JSON.parse(JSON.stringify(outputCss, null, 2))}
         </pre>

@@ -17,6 +17,9 @@ html {
   /* Optional: just make scrollbar invisible */
 }
 
+pre{
+  margin: 0;
+}
 
 .right-section,
 .left-section {
@@ -86,6 +89,7 @@ html {
 .content-area {
   margin-top: 100px;
   font-size: 18px;
+  min-height: 100vh;
   padding: 20px 30px;
   color: var(--color__1);
   background:var(--color__3);
@@ -106,5 +110,37 @@ html {
 
 .container .hide {
   display: none;
+}
+
+/* animation css */
+.slideInRight {
+  -webkit-animation-name: slideInRight;
+  animation-name: slideInRight;
+}
+
+@-webkit-keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
 
