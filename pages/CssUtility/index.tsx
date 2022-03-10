@@ -24,6 +24,13 @@ function leftPad(number, targetLength) {
   return output;
 }
 
+function searchReplace(str, word, newWord) {
+  if (word[0] === word[0].toUpperCase()) {
+    newWord = newWord[0].toUpperCase() + newWord.slice(1)
+  }
+  return str.replace(word, newWord)
+}
+
 function sortColorBasedOnCount(a, b) {
   var countA = a.count;
   let countB = b.count;
@@ -91,7 +98,8 @@ export default function CssTransform() {
       tempColorObj['original'] = colorVal;
       tempColorObj['count'] = matchColorLen;
       tempColorsArr.push(tempColorObj);
-      tempCss = replaceAll(tempCss, color, colorName);
+      tempCss = searchReplace(tempCss, color, colorName);
+      // tempCss = searchReplace(tempCss, `.${colorName}`, color);
 
       // set Opacity 1 after 200ms
       setTimeout(() => {
