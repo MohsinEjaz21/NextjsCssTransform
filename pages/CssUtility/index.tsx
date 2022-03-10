@@ -103,9 +103,6 @@ export default function CssTransform() {
       return rgbColor;
     });
 
-    // console.log(" NEW CSS ")
-    // console.log(tempCss)
-
     tempColorsArr.sort(sortColorBasedOnCount);
     setOutputCss(tempCss);
     setColorArr(tempColorsArr);
