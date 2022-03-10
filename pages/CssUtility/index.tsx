@@ -1,4 +1,5 @@
 import { useState } from "react";
+import swal from 'sweetalert';
 import { DefaultCssTemplate } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
@@ -30,6 +31,23 @@ function sortColorBasedOnCount(a, b) {
   if (countA > countB) return -1;
   return 0;
 }
+
+
+function copyToClipBoard() {
+  var copyText = document.getElementById("finalContent");
+  navigator.clipboard.writeText(copyText!.innerText)
+
+  // swal for 2s  then close
+  swal({
+    title: "Copied!",
+    text: "Your CSS is copied to clipboard",
+    icon: "success",
+    timer: 1000,
+    button: false
+  });
+
+}
+
 
 export default function CssTransform() {
   const [inputCss, setInputCss] = useState(DefaultCssTemplate);
@@ -116,6 +134,7 @@ export default function CssTransform() {
           <button id="transformBtn" className="btn btn-primary" onClick={handleTransform}>
             Transform (Click Me)
           </button>
+
         </div>
         <textarea
           className="inputcss-textarea content-area"
@@ -128,23 +147,24 @@ export default function CssTransform() {
           <div className="heading-primary">
             Dynamic CSS 🎉
           </div>
+          <button className="btn btn-primary" onClick={copyToClipBoard}>
+            Copy CSS
+          </button>
         </div>
 
-        <pre className="generated-css content-area slideInRight">
-
-          {colorArr.length > 0 && <>{`:root {`}</>}
-
+        <pre id="finalContent" className="generated-css content-area slideInRight">
+          <div>{colorArr.length > 0 && <>{`:root {`}</>}</div>
           {colorArr.map((color: any, index) => {
             return (
-              <div>
-                <span key={index} className="color-variables floatLeft">
+              <>
+                <div key={index} className="color-variables floatLeft">
                   {color.key}: {color.original};
-                </span>
-                <span className="floatLeft">
+                </div>
+                <div >
                      /* {color.count} */
-                </span>
-                <br />
-              </div>
+                </div>
+                {/* <br /> */}
+              </>
             )
           })}
 
@@ -154,13 +174,13 @@ export default function CssTransform() {
           {colorArr.map((color: any, index) => {
             return (
               <>
-                <span key={index} className="color-variables floatLeft">
+                <div key={index} className="color-variables floatLeft">
                   {color.key}: {color.value};
-                </span>
-                <span className="floatLeft">
+                </div>
+                <div >
                      /* {color.count} */
-                </span>
-                <br />
+                </div>
+                {/* <br /> */}
               </>
             )
           })}
