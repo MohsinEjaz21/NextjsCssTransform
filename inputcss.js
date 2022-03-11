@@ -1,5 +1,5 @@
 export const CSSTemplate1 = `
-/* Template#1 */
+/* Fake Template#1 */
 
 html {
   font-family: sans-serif;
@@ -17891,7 +17891,7 @@ figcaption {
 `
 
 export const CSSTemplate2 = `
-/* Template#2 */
+/*Fake Template#2 */
 
 @charset "utf-8";@font-face {
   font-family: icons-ibm-v12;

@@ -181,14 +181,20 @@ export default function CssTransform() {
       <div className="left-section">
         <div className="section-header">
           <div className="heading-primary">
-            Enter Yours CSS
+            Enter Your CSS 🌸
           </div>
-          <button className="btn btn-primary" onClick={changeTemplate}>
-            Template Change
-          </button>
-          <button className="btn btn-primary" onClick={handleTransform}>
-            Transform (Click Me)
-          </button>
+
+
+          <div className="action-btns" >
+            <button className="btn btn-primary" onClick={changeTemplate}>
+              Use Fake CSS
+            </button>
+            <button className="margin-left-15px btn btn-primary" onClick={() => setInputCss('/* Paste Your Css */ \n\n')}>
+              Paste Your Own
+            </button>
+          </div>
+
+
         </div>
         <textarea
           className="inputcss-textarea content-area"
@@ -201,9 +207,14 @@ export default function CssTransform() {
           <div className="heading-primary">
             Dynamic CSS 🎉
           </div>
-          <button className="btn btn-primary" onClick={copyToClipBoard}>
-            Copy CSS
-          </button>
+          <div className="action-btns" >
+            <button className="btn btn-primary" onClick={handleTransform}>
+              🌈 Make CSS Beutiful
+            </button>
+            <button className="margin-left-15px btn btn-primary" onClick={copyToClipBoard}>
+              ✅ Copy New CSS
+            </button>
+          </div>
         </div>
 
         <pre id="finalContent" className="generated-css content-area slideInRight">
