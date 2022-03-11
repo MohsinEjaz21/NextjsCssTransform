@@ -12,9 +12,9 @@ function replaceAll(str, find, replace) {
   return str.replaceAll(find, replace);
 }
 
-function exactMatchReplace(str, find, replace) {
-  return str.replaceAll(new RegExp(escapeRegExp(find), 'g'), replace);
-}
+// function exactMatchReplace(str, find, replace) {
+//   return str.replaceAll(new RegExp(escapeRegExp(find), 'g'), replace);
+// }
 
 function countMatch(str, find) {
   return str.match(new RegExp(escapeRegExp(find), 'g'));
@@ -53,6 +53,7 @@ export default function CssTransform() {
 
   function handleTransform() {
     let tempCss = inputCss;
+    let colorIndex = 1;
     let namedColors = Object.keys(CssNamedColors);
     // Correcting css colors so that only get true colors when extract
     tempCss = tempCss.split('\n').map(line => {
@@ -84,27 +85,28 @@ export default function CssTransform() {
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
       let color = colorVal.replace(/\s/g, '');
-      let currCssVar = `--color__${index + 1}`;
+      let currCssVar = `--color__${colorIndex}`;
       let colorName = `var(${currCssVar})`;
       let matchColorLen = (countMatch(tempCss, color) || []).length
       let tempColorObj = {}
       let parser = new Color(colorVal);
       let rgbColor = parser.toRGBA();
 
-      // let findIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
-      // if (findIndex > -1) {
-      //   currCssVar = tempColorsArr[findIndex]['key'];
-      //   colorName = `var(${currCssVar})`;
-      //   tempColorsArr[findIndex]['count'] = tempColorsArr[findIndex]['count'] + matchColorLen;
-      // }
+      let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
+      if (foundColorIndex > -1) {
+        currCssVar = tempColorsArr[foundColorIndex]['key'];
+        colorName = `var(${currCssVar})`;
+        tempColorsArr[foundColorIndex]['count'] = tempColorsArr[foundColorIndex]['count'] + matchColorLen;
+      }
 
-      // else {
-      tempColorObj['key'] = currCssVar;
-      tempColorObj['value'] = rgbColor;
-      tempColorObj['original'] = colorVal;
-      tempColorObj['count'] = matchColorLen;
-      tempColorsArr.push(tempColorObj);
-      // }
+      else {
+        tempColorObj['key'] = currCssVar;
+        tempColorObj['value'] = rgbColor;
+        tempColorObj['original'] = colorVal;
+        tempColorObj['count'] = matchColorLen;
+        tempColorsArr.push(tempColorObj);
+        colorIndex++;
+      }
 
       tempCss = replaceAll(tempCss, color, colorName);
       // tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
@@ -156,6 +158,12 @@ export default function CssTransform() {
         </div>
 
         <pre id="finalContent" className="generated-css content-area slideInRight">
+          <div>{colorArr.length > 0 && <>{`/* ColorLength is ${colorArr.length} */`}</>}</div>
+          <div>{colorArr.length > 0 && <>{`/* Note Point :: Named colors are transform into 
+            respective hex format to avoid color repetition )*/`}</>}</div>
+
+          <div>{colorArr.length > 0 && <>{`/* Original Colors are below */`}</>}</div>
+
           <div>{colorArr.length > 0 && <>{`:root {`}</>}</div>
 
           {colorArr.map((color: any, index) => {
@@ -172,7 +180,7 @@ export default function CssTransform() {
           })}
 
           <br />
-          {colorArr.length > 0 && <div>{` /* Override with Rgba */`}</div>}
+          {colorArr.length > 0 && <div>{` /* Override colors with Rgba */`}</div>}
           <br /><br />
           {colorArr.map((color: any, index) => {
             return (
