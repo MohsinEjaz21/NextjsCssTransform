@@ -62,7 +62,7 @@ export default function CssTransform() {
       fakeIndex++;
     }
 
-    console.log(fakeIndex);
+    // console.log(fakeIndex);
 
     setFakeTemplateIndex(fakeIndex);
     setInputCss(FakeTemplates[fakeIndex])
@@ -76,7 +76,7 @@ export default function CssTransform() {
     tempCss = tempCss.split('\n').map(line => {
 
       if (line.indexOf('url(https://1.www.s81c.com/common/v17e/i/buttons/btn-sprite.png) no-repeat 0 0 transparent') > -1) {
-        console.log("here ")
+        // console.log("here ")
 
         //     console.log(`
         //   line: ${line}
@@ -134,9 +134,9 @@ export default function CssTransform() {
     hexColors.sort((a, b) => b.length - a.length)
     tempColors = [...hexColors, ...otherThanHexColors];
 
-    tempColors.forEach((colorVal: any, index) => {
-      console.log(`new_color_${index}`, colorVal);
-    })
+    // tempColors.forEach((colorVal: any, index) => {
+    //   console.log(`new_color_${index}`, colorVal);
+    // })
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
       let color = colorVal.replace(/\s/g, '');
@@ -147,21 +147,20 @@ export default function CssTransform() {
       let parser = new Color(colorVal);
       let rgbColor = parser.toRGBA();
 
-      // let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
-      // if (foundColorIndex > -1) {
-      //   currCssVar = tempColorsArr[foundColorIndex]['key'];
-      //   colorName = `var(${currCssVar})`;
-      //   tempColorsArr[foundColorIndex]['count'] = tempColorsArr[foundColorIndex]['count'] + matchColorLen;
-      // }
-
-      // else {
-      tempColorObj['key'] = currCssVar;
-      tempColorObj['value'] = rgbColor;
-      tempColorObj['original'] = colorVal;
-      tempColorObj['count'] = matchColorLen;
-      tempColorsArr.push(tempColorObj);
-      colorIndex++;
-      // }
+      let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
+      if (foundColorIndex > -1) {
+        currCssVar = tempColorsArr[foundColorIndex]['key'];
+        colorName = `var(${currCssVar})`;
+        tempColorsArr[foundColorIndex]['count'] = tempColorsArr[foundColorIndex]['count'] + matchColorLen;
+      }
+      else {
+        tempColorObj['key'] = currCssVar;
+        tempColorObj['value'] = rgbColor;
+        tempColorObj['original'] = colorVal;
+        tempColorObj['count'] = matchColorLen;
+        tempColorsArr.push(tempColorObj);
+        colorIndex++;
+      }
 
       tempCss = replaceAll(tempCss, color, colorName);
       // tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
