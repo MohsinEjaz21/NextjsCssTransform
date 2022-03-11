@@ -5,13 +5,15 @@ var extractor = require('css-color-extractor');
 var Color = require('easy-color');
 
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function replaceAll(str, find, replace) {
-  // return str.replaceAll(find, replace);
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+  return str.replaceAll(find, replace);
+}
 
+function replaceAll2(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
 function countMatch(str, find) {
@@ -55,21 +57,23 @@ export default function CssTransform() {
 
     tempCss = tempCss.split('\n').map(line => {
 
-      if (line.includes(':') && !line.includes('{')) {
-        line = line.replace(new RegExp(escapeRegExp("black"), 'g'), "#000000");
+      if (line.includes(':') && line.indexOf('{') === -1) {
+        line = replaceAll2(line, 'black', CssNamedColors.black);
+        // line = line.replace(new RegExp(escapeRegExp("black"), 'g'), "#000000");
 
         if (line.split(':')[0].indexOf('white') < 0) {
-          line = line.replace(new RegExp(escapeRegExp("white"), 'g'), "#ffffff");
+          line = replaceAll2(line, 'white', CssNamedColors.white);
         }
         if (line.includes('transparent')) {
-          line = line.replace(new RegExp(escapeRegExp("transparent"), 'g'), "rgba(0,0,0,0)");
+          line = replaceAll2(line, 'transparent', "rgba(0,0,0,0)");
         }
 
-        namedColors.forEach(color => {
-          if (line.includes(color)) {
-            line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
-          }
-        })
+        // namedColors.forEach(color => {
+        //   if (line.includes(color)) {
+        //     line = replaceAll2(line, color, CssNamedColors[color]);
+        //     // line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
+        //   }
+        // })
       }
       return line;
     }).join('\n');;
@@ -112,7 +116,7 @@ export default function CssTransform() {
       // }
 
       tempCss = replaceAll(tempCss, color, colorName);
-      tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
+      // tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
 
       return rgbColor;
     });
