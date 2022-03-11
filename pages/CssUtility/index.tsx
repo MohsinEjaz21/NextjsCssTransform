@@ -54,26 +54,17 @@ export default function CssTransform() {
   function handleTransform() {
     let tempCss = inputCss;
     let namedColors = Object.keys(CssNamedColors);
-
+    // Correcting css colors so that only get true colors when extract
     tempCss = tempCss.split('\n').map(line => {
+      if (line.indexOf(':') > -1 && line.indexOf('{') === -1) {
+        namedColors.forEach(color => {
+          let regex = new RegExp('\\b(' + color + ')\\b');
+          let secondPart = line.split(':')[1];
 
-      if (line.includes(':') && line.indexOf('{') === -1) {
-        line = exactMatchReplace(line, 'black', CssNamedColors.black);
-        // line = line.replace(new RegExp(escapeRegExp("black"), 'g'), "#000000");
-
-        if (line.split(':')[0].indexOf('white') < 0) {
-          line = exactMatchReplace(line, 'white', CssNamedColors.white);
-        }
-        if (line.includes('transparent')) {
-          line = exactMatchReplace(line, 'transparent', "rgba(0,0,0,0)");
-        }
-
-        // namedColors.forEach(color => {
-        //   if (line.includes(color)) {
-        //     line = exactMatchReplace(line, color, CssNamedColors[color]);
-        //     // line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
-        //   }
-        // })
+          if (secondPart.match(regex)) {
+            line = replaceAll(line, color, CssNamedColors[color]);
+          }
+        })
       }
       return line;
     }).join('\n');;
@@ -208,4 +199,16 @@ export default function CssTransform() {
     </div>
   )
 }
+
+
+
+        // line = exactMatchReplace(line, 'black', CssNamedColors.black);
+
+        // if (line.split(':')[0].indexOf('white') < 0) {
+        //   line = exactMatchReplace(line, 'white', CssNamedColors.white);
+        // }
+        // if (line.includes('transparent')) {
+        //   line = exactMatchReplace(line, 'transparent', "rgba(0,0,0,0)");
+        // }
+            // line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
 
