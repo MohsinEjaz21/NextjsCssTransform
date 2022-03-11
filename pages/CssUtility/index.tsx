@@ -163,6 +163,7 @@ export default function CssTransform() {
             respective hex format to avoid color repetition )*/`}</>}</div>
 
           <div>{colorArr.length > 0 && <>{`/* Original Colors are below */`}</>}</div>
+          <br></br>
 
           <div>{colorArr.length > 0 && <>{`:root {`}</>}</div>
 
