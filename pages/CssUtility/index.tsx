@@ -1,6 +1,6 @@
 import { useState } from "react";
 import swal from 'sweetalert';
-import { CssNamedColors, CSSTemplate1, CSSTemplate2 } from '../../inputcss';
+import { CssNamedColors, FakeTemplates } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
 
@@ -48,22 +48,24 @@ function copyToClipBoard() {
 
 export default function CssTransform() {
 
-  const [inputCss, setInputCss] = useState(CSSTemplate2);
+  const [inputCss, setInputCss] = useState(FakeTemplates[0]);
   const [outputCss, setOutputCss] = useState('');
   const [colorArr, setColorArr] = useState([]);
-  const [inputTemplate, setInputTemplate] = useState(1);
+  const [fakeTemplateIndex, setFakeTemplateIndex] = useState(0);
 
 
   function changeTemplate() {
-    if (inputTemplate === 1) {
-      setInputTemplate(2);
-      setInputCss(CSSTemplate2)
-    }
-    else {
-      setInputTemplate(1);
-      setInputCss(CSSTemplate1)
+    let fakeIndex = fakeTemplateIndex;
+    if (fakeIndex == FakeTemplates.length - 1) {
+      fakeIndex = 0;
+    } else {
+      fakeIndex++;
     }
 
+    console.log(fakeIndex);
+
+    setFakeTemplateIndex(fakeIndex);
+    setInputCss(FakeTemplates[fakeIndex])
   }
 
   function handleTransform() {
@@ -98,8 +100,11 @@ export default function CssTransform() {
 
         namedColors.forEach(color => {
           let regex = new RegExp('\\b' + color + '\\b');
+          let regex1 = new RegExp('\\b' + color + '-' + '\\b');
+          let regex2 = new RegExp('\\b' + '-' + color + '\\b');
+
           let secondPart = line.substring(line.indexOf(':') + 1);
-          if (secondPart.match(regex)) {
+          if (secondPart.match(regex) && !secondPart.match(regex1) && !secondPart.match(regex2)) {
             line = replaceAll(line, color, CssNamedColors[color]);
           }
         })
