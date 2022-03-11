@@ -97,13 +97,18 @@ export default function CssTransform() {
         && line.indexOf(':visited') === -1
         && line.indexOf(':focus') === -1
       ) {
+        let secondPart = line.substring(line.indexOf(':') + 1);
+
+        if (secondPart.indexOf('rgb') > -1 && secondPart.indexOf(',') > -1) {
+          line = replaceAll(line, ', ', ',');
+          line = replaceAll(line, ' ,', ',');
+        }
 
         namedColors.forEach(color => {
           let regex = new RegExp('\\b' + color + '\\b');
           let regex1 = new RegExp('\\b' + color + '-' + '\\b');
           let regex2 = new RegExp('\\b' + '-' + color + '\\b');
 
-          let secondPart = line.substring(line.indexOf(':') + 1);
           if (secondPart.match(regex) && !secondPart.match(regex1) && !secondPart.match(regex2)) {
             line = replaceAll(line, color, CssNamedColors[color]);
           }
@@ -129,9 +134,9 @@ export default function CssTransform() {
     hexColors.sort((a, b) => b.length - a.length)
     tempColors = [...hexColors, ...otherThanHexColors];
 
-
-    // navigator.clipboard.writeText(tempColors)
-    // return
+    tempColors.forEach((colorVal: any, index) => {
+      console.log(`new_color_${index}`, colorVal);
+    })
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
       let color = colorVal.replace(/\s/g, '');
@@ -142,21 +147,21 @@ export default function CssTransform() {
       let parser = new Color(colorVal);
       let rgbColor = parser.toRGBA();
 
-      let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
-      if (foundColorIndex > -1) {
-        currCssVar = tempColorsArr[foundColorIndex]['key'];
-        colorName = `var(${currCssVar})`;
-        tempColorsArr[foundColorIndex]['count'] = tempColorsArr[foundColorIndex]['count'] + matchColorLen;
-      }
+      // let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString())
+      // if (foundColorIndex > -1) {
+      //   currCssVar = tempColorsArr[foundColorIndex]['key'];
+      //   colorName = `var(${currCssVar})`;
+      //   tempColorsArr[foundColorIndex]['count'] = tempColorsArr[foundColorIndex]['count'] + matchColorLen;
+      // }
 
-      else {
-        tempColorObj['key'] = currCssVar;
-        tempColorObj['value'] = rgbColor;
-        tempColorObj['original'] = colorVal;
-        tempColorObj['count'] = matchColorLen;
-        tempColorsArr.push(tempColorObj);
-        colorIndex++;
-      }
+      // else {
+      tempColorObj['key'] = currCssVar;
+      tempColorObj['value'] = rgbColor;
+      tempColorObj['original'] = colorVal;
+      tempColorObj['count'] = matchColorLen;
+      tempColorsArr.push(tempColorObj);
+      colorIndex++;
+      // }
 
       tempCss = replaceAll(tempCss, color, colorName);
       // tempCss = replaceAll(tempCss, `.${colorName}`, `.${colorVal}`);
