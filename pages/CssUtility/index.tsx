@@ -1,6 +1,6 @@
 import { useState } from "react";
 import swal from 'sweetalert';
-import { CssNamedColors, DefaultCssTemplate } from '../../inputcss';
+import { CssNamedColors, CSSTemplate1, CSSTemplate2 } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
 
@@ -47,9 +47,24 @@ function copyToClipBoard() {
 }
 
 export default function CssTransform() {
-  const [inputCss, setInputCss] = useState(DefaultCssTemplate);
+
+  const [inputCss, setInputCss] = useState(CSSTemplate2);
   const [outputCss, setOutputCss] = useState('');
   const [colorArr, setColorArr] = useState([]);
+  const [inputTemplate, setInputTemplate] = useState(1);
+
+
+  function changeTemplate() {
+    if (inputTemplate === 1) {
+      setInputTemplate(2);
+      setInputCss(CSSTemplate2)
+    }
+    else {
+      setInputTemplate(1);
+      setInputCss(CSSTemplate1)
+    }
+
+  }
 
   function handleTransform() {
     let tempCss = inputCss;
@@ -57,19 +72,45 @@ export default function CssTransform() {
     let namedColors = Object.keys(CssNamedColors);
     // Correcting css colors so that only get true colors when extract
     tempCss = tempCss.split('\n').map(line => {
-      if (line.indexOf(':') > -1 && line.indexOf('{') === -1) {
-        namedColors.forEach(color => {
-          let regex = new RegExp('\\b(' + color + ')\\b');
-          let secondPart = line.split(':')[1];
 
+      if (line.indexOf('url(https://1.www.s81c.com/common/v17e/i/buttons/btn-sprite.png) no-repeat 0 0 transparent') > -1) {
+        console.log("here ")
+
+        //     console.log(`
+        //   line: ${line}
+        //   ${line.indexOf(':')} 
+        //   ${line.indexOf('{')}
+        //   ${line.indexOf(':hover')}
+        //   ${line.indexOf(':active')}
+        //   ${line.indexOf(':visited')}
+        //   ${line.indexOf(':focus')}
+        //   ${line.substring(line.indexOf(':') + 1)}
+        // `)
+      }
+
+      if (line.indexOf(':') > -1
+        && line.indexOf('{') === -1
+        && line.indexOf(':hover') === -1
+        && line.indexOf(':active') === -1
+        && line.indexOf(':visited') === -1
+        && line.indexOf(':focus') === -1
+      ) {
+
+        namedColors.forEach(color => {
+          let regex = new RegExp('\\b' + color + '\\b');
+          let secondPart = line.substring(line.indexOf(':') + 1);
           if (secondPart.match(regex)) {
             line = replaceAll(line, color, CssNamedColors[color]);
           }
         })
+
       }
       return line;
     }).join('\n');;
 
+    // setOutputCss(tempCss);
+    // return
+    // console.log("tempCss", tempCss);
 
     let tempColorsArr: any = [];
     let generatedContentArea: any = document.querySelector('div.right-section > pre');
@@ -82,6 +123,10 @@ export default function CssTransform() {
     let otherThanHexColors = tempColors.filter((colorVal: any) => colorVal.indexOf('#') == -1);
     hexColors.sort((a, b) => b.length - a.length)
     tempColors = [...hexColors, ...otherThanHexColors];
+
+
+    // navigator.clipboard.writeText(tempColors)
+    // return
 
     tempColors = tempColors.map((colorVal: any, index: number) => {
       let color = colorVal.replace(/\s/g, '');
@@ -114,6 +159,8 @@ export default function CssTransform() {
       return rgbColor;
     });
 
+    tempCss = replaceAll(tempCss, '@charset "utf-8";', '');
+
     setTimeout(() => {
       if (generatedContentArea) {
         generatedContentArea.style.opacity = '1';
@@ -136,10 +183,12 @@ export default function CssTransform() {
           <div className="heading-primary">
             Enter Yours CSS
           </div>
-          <button id="transformBtn" className="btn btn-primary" onClick={handleTransform}>
+          <button className="btn btn-primary" onClick={changeTemplate}>
+            Template Change
+          </button>
+          <button className="btn btn-primary" onClick={handleTransform}>
             Transform (Click Me)
           </button>
-
         </div>
         <textarea
           className="inputcss-textarea content-area"
