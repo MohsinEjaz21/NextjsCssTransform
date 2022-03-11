@@ -12,7 +12,7 @@ function replaceAll(str, find, replace) {
   return str.replaceAll(find, replace);
 }
 
-function replaceAll2(str, find, replace) {
+function exactMatchReplace(str, find, replace) {
   return str.replaceAll(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
@@ -58,19 +58,19 @@ export default function CssTransform() {
     tempCss = tempCss.split('\n').map(line => {
 
       if (line.includes(':') && line.indexOf('{') === -1) {
-        line = replaceAll2(line, 'black', CssNamedColors.black);
+        line = exactMatchReplace(line, 'black', CssNamedColors.black);
         // line = line.replace(new RegExp(escapeRegExp("black"), 'g'), "#000000");
 
         if (line.split(':')[0].indexOf('white') < 0) {
-          line = replaceAll2(line, 'white', CssNamedColors.white);
+          line = exactMatchReplace(line, 'white', CssNamedColors.white);
         }
         if (line.includes('transparent')) {
-          line = replaceAll2(line, 'transparent', "rgba(0,0,0,0)");
+          line = exactMatchReplace(line, 'transparent', "rgba(0,0,0,0)");
         }
 
         // namedColors.forEach(color => {
         //   if (line.includes(color)) {
-        //     line = replaceAll2(line, color, CssNamedColors[color]);
+        //     line = exactMatchReplace(line, color, CssNamedColors[color]);
         //     // line = line.replace(new RegExp(escapeRegExp(color), 'g'), CssNamedColors[color]);
         //   }
         // })
