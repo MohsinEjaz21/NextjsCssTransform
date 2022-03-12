@@ -4,6 +4,7 @@ import { CssNamedColors, FakeTemplates } from '../../inputcss';
 var extractor = require('css-color-extractor');
 var Color = require('easy-color');
 
+
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -12,9 +13,13 @@ function replaceAll(str, find, replace) {
   return str.replaceAll(find, replace);
 }
 
-// function exactMatchReplace(str, find, replace) {
-//   return str.replaceAll(new RegExp(escapeRegExp(find), 'g'), replace);
-// }
+function OverrideAlert() {
+  return (
+    <div className="alert alert-warning" role="alert">
+      <strong>Warning!</strong> You are overriding a color.
+    </div>
+  );
+}
 
 function countMatch(str, find) {
   return str.match(new RegExp(escapeRegExp(find), 'g'));
@@ -227,13 +232,7 @@ export default function CssTransform() {
         </div>
 
         <pre id="finalContent" className="generated-css content-area slideInRight">
-          <div>{colorArr.length > 0 && <>{`/* ColorLength is ${colorArr.length} */`}</>}</div>
-          <div>{colorArr.length > 0 && <>{`/* Note Point :: Named colors are transform into 
-            respective hex format to avoid color repetition )*/`}</>}</div>
-
-          <div>{colorArr.length > 0 && <>{`/* Original Colors are below */`}</>}</div>
-          <br></br>
-
+          <div>{colorArr.length > 0 && <>{outputCssMessage()}</>}</div>
           <div>{colorArr.length > 0 && <>{`:root {`}</>}</div>
 
           {colorArr.map((color: any, index) => {
@@ -250,15 +249,7 @@ export default function CssTransform() {
           })}
 
           <br />
-          {colorArr.length > 0 && <div>{` 
-          /*
-          &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-          Override colors with Rgba 
-          &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-          */
-          `}
-          </div>}
-          <br /><br />
+          {colorArr.length > 0 && <>{overrideColorMessage()}</>}
           {colorArr.map((color: any, index) => {
             return (
               <>
@@ -283,6 +274,18 @@ export default function CssTransform() {
 
     </div>
   )
+
+  function outputCssMessage() {
+    return <><div className="alert-message">
+      {`/* ColorLength is ${colorArr.length} \n Note Point :: Named colors are transform into \n respective hex format to avoid color repetition \n Original Colors are below */ `}
+    </div><br /></>
+  }
+
+  function overrideColorMessage() {
+    return <><div className="alert-message">
+      {`/* ======================== \n Override colors with Rgba \n ======================== */ `}
+    </div><br /></>
+  }
 }
 
 
