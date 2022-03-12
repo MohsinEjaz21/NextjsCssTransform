@@ -67,7 +67,7 @@ export default function CssTransformIndex() {
         tempColorObj['rgba'] = rgbColor;
         tempColorObj['original'] = colorVal;
         tempColorObj['count'] = matchColorLen;
-        tempColorObj['hsla'] = matchColorLen;
+        tempColorObj['hsla'] = hslaColor;
         tempColorsArr.push(tempColorObj);
         colorIndex++;
       }
@@ -217,10 +217,11 @@ function OutputCssJsx(prop) {
       {outputCss.length > 0 && (
         <>
           {outputCssMessage()}
-          {<div>{`:root {`} </div>}
+          {<div>{`:root { \n`} </div>}
           {renderColors('original')}<br />
-          {overrideColorMessage()}<br />
           {renderColors('rgba')}<br />
+          {renderColors('hsla')}<br />
+
           {<div>{`}`} </div>}
         </>
       )}
@@ -247,24 +248,28 @@ function OutputCssJsx(prop) {
     </div><br /></>
   }
 
-  function overrideColorMessage() {
-    return <><div className="alert-message">
-      {`/* ======================== \n Override colors with Rgba \n ======================== */ `}
-    </div><br />
-    </>
-  }
-
   function renderColors(type) {
-    return colorArr.map((color: any, index) => {
-      return <>
-        <div key={index} className="color-variables floatLeft">
-          {color.key}: {color[type]};
-        </div>
-        <div>
-          {` /*  ${color.count} */`}
-        </div>
-      </>;
-    });
+
+    return (<>
+      <div className="alert-message">
+        {`/* ======================== \n Override colors with ${type} \n ======================== */ \n`}
+      </div><br />
+
+      {colorArr.map((color: any, index) => {
+        return <>
+          <div key={index} className="color-variables floatLeft">
+            {color.key}: {color[type]};
+          </div>
+          <div>
+            {` /*  ${color.count} */`}
+          </div>
+        </>;
+      })}
+
+    </>)
+
+
+
   }
 }
 
