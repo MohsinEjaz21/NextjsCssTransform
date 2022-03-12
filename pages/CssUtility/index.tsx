@@ -250,7 +250,14 @@ export default function CssTransform() {
           })}
 
           <br />
-          {colorArr.length > 0 && <div>{` /* Override colors with Rgba */`}</div>}
+          {colorArr.length > 0 && <div>{` 
+          /*
+          &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+          Override colors with Rgba 
+          &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+          */
+          `}
+          </div>}
           <br /><br />
           {colorArr.map((color: any, index) => {
             return (
