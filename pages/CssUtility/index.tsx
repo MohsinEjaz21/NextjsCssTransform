@@ -97,7 +97,7 @@ export default function CssTransformIndex() {
         && line.indexOf(':focus') === -1) {
         let secondPart = line.substring(line.indexOf(':') + 1);
 
-        if (secondPart.indexOf('rgb') > -1 && secondPart.indexOf(',') > -1) {
+        if ((secondPart.indexOf('rgb') > -1 || secondPart.indexOf('hsla') > -1) && secondPart.indexOf(',') > -1) {
           line = replaceAll(line, ', ', ',');
           line = replaceAll(line, ' ,', ',');
         }
