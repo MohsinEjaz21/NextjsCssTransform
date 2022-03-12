@@ -216,7 +216,7 @@ function OutputCssJsx(prop) {
     <pre id="finalContent" className="generated-css content-area slideInRight">
       {outputCss.length > 0 && (
         <>
-          {outputCssMessage()}
+          {outputCssNotePoint()}
           {<div>{`:root { \n`} </div>}
           {renderColors('original')}<br />
           {renderColors('rgba')}<br />
@@ -242,7 +242,7 @@ function OutputCssJsx(prop) {
     });
   }
 
-  function outputCssMessage() {
+  function outputCssNotePoint() {
     return <><div className="alert-message">
       {`/* ColorLength is ${colorArr.length} \n Note Point :: Named colors are transform into \n respective hex format to avoid color repetition \n Original Colors are below */ `}
     </div><br /></>
