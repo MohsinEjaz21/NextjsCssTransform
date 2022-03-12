@@ -198,7 +198,7 @@ export default function CssTransform() {
             <button className="btn btn-primary" onClick={changeTemplate}>
               Use Fake CSS
             </button>
-            <button className="margin-left-15px btn btn-primary" onClick={() => setInputCss('/* Paste Your Css */ \n\n')}>
+            <button className="margin-left-15px btn btn-primary" onClick={() => setInputCss('/* Paste Your Css */')} >
               Paste Your Own
             </button>
           </div>
