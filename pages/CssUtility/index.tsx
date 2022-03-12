@@ -86,7 +86,6 @@ export default function CssTransformIndex() {
     let namedColors = Object.keys(CssNamedColors);
 
     tempCss = tempCss.split('\n').map(line => {
-      // tempLogs(line)
       if (line.indexOf(':') > -1
         && line.indexOf('{') === -1
         && line.indexOf(':hover') === -1
@@ -101,11 +100,13 @@ export default function CssTransformIndex() {
         }
 
         namedColors.forEach(color => {
-          let regex = new RegExp('\\b' + color + '\\b');
-          let regex1 = new RegExp('\\b' + color + '-' + '\\b');
-          let regex2 = new RegExp('\\b' + '-' + color + '\\b');
+          let exactMatchRegex = new RegExp('\\b' + color + '\\b');
+          let endWithHyphenRegex = new RegExp('\\b' + color + '-' + '\\b');
+          let startWithHyphenRegex = new RegExp('\\b' + '-' + color + '\\b');
 
-          if (secondPart.match(regex) && !secondPart.match(regex1) && !secondPart.match(regex2)) {
+          if (secondPart.match(exactMatchRegex)
+            && !secondPart.match(endWithHyphenRegex)
+            && !secondPart.match(startWithHyphenRegex)) {
             line = replaceAll(line, color, CssNamedColors[color]);
           }
         });
