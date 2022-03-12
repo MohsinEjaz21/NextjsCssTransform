@@ -50,6 +50,7 @@ export default function CssTransformIndex() {
       let tempColorObj = {};
       let parser = new Color(colorVal);
       let rgbColor = parser.toRGBA();
+      let hslaColor = parser.toHSLA();
 
       let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString());
       foundColorIndex > -1 ? colorAlreadyDeclared() : declareNewColor()
@@ -63,9 +64,10 @@ export default function CssTransformIndex() {
 
       function declareNewColor() {
         tempColorObj['key'] = currCssVar;
-        tempColorObj['value'] = rgbColor;
+        tempColorObj['rgba'] = rgbColor;
         tempColorObj['original'] = colorVal;
         tempColorObj['count'] = matchColorLen;
+        tempColorObj['hsla'] = matchColorLen;
         tempColorsArr.push(tempColorObj);
         colorIndex++;
       }
@@ -216,9 +218,9 @@ function OutputCssJsx(prop) {
         <>
           {outputCssMessage()}
           {<div>{`:root {`} </div>}
-          {renderOriginalColors()}<br />
+          {renderColors('original')}<br />
           {overrideColorMessage()}<br />
-          {renderOverideColorsInRgba()}
+          {renderColors('rgba')}<br />
           {<div>{`}`} </div>}
         </>
       )}
@@ -252,11 +254,11 @@ function OutputCssJsx(prop) {
     </>
   }
 
-  function renderOriginalColors() {
+  function renderColors(type) {
     return colorArr.map((color: any, index) => {
       return <>
         <div key={index} className="color-variables floatLeft">
-          {color.key}: {color.original};
+          {color.key}: {color[type]};
         </div>
         <div>
           {` /*  ${color.count} */`}
@@ -264,20 +266,6 @@ function OutputCssJsx(prop) {
       </>;
     });
   }
-
-  function renderOverideColorsInRgba() {
-    return colorArr.map((color: any, index) => {
-      return <>
-        <div key={index} className="color-variables floatLeft">
-          {color.key}: {color.value};
-        </div>
-        <div>
-          {` /* ${color.count} */`}
-        </div>
-      </>;
-    });
-  }
-
 }
 
 // =============
