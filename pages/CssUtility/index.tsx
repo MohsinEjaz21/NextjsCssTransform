@@ -1,8 +1,8 @@
 import { useState } from "react";
 import swal from 'sweetalert';
 import { CssNamedColors, FakeTemplates } from '../../inputcss';
-var extractor = require('css-color-extractor');
-var Color = require('easy-color');
+const extractor = require('css-color-extractor');
+const Color = require('easy-color');
 
 export default function CssTransformIndex() {
 
