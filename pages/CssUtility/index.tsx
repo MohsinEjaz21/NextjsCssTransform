@@ -252,7 +252,7 @@ function OutputCssJsx(prop) {
 
     return (<>
       <div className="alert-message">
-        {`/* ======================== \n Override colors with ${type} \n ======================== */ \n`}
+        {`/* ===============================  \n if you like ${type} colors formate \n use below ⬇️ \n ===============================  */ \n`}
       </div><br />
 
       {colorArr.map((color: any, index) => {
