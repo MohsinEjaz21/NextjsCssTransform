@@ -24,8 +24,6 @@ export default function CssTransformIndex() {
     // printColors(tempColors);
 
     ({ colorIndex, tempCss } = replaceColorWithVariableNameInCss(tempColors, colorIndex, tempCss, tempColorsArr));
-    tempCss = replaceAll(tempCss, '@charset "utf-8";', '');
-    tempCss = replaceAll(tempCss, '@charset "UTF-8";', '');
 
     showOutputCss(generatedContentArea);
     tempColorsArr.sort(sortColorByCountDesc);
@@ -54,6 +52,7 @@ export default function CssTransformIndex() {
       let foundColorIndex = tempColorsArr.findIndex(color => color.value == rgbColor.toString());
       foundColorIndex > -1 ? colorAlreadyDeclared() : declareNewColor()
       tempCss = replaceAll(tempCss, color, colorName);
+      tempCss = replaceAll(tempCss, '@charset "utf-8";', '');
 
       function colorAlreadyDeclared() {
         currCssVar = tempColorsArr[foundColorIndex]['key'];
