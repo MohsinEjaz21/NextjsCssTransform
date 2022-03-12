@@ -2,6 +2,7 @@
   --color__1: rgba(255, 255, 255, 1);
   --color__2: rgb(65, 105, 224);
   --color__3: rgb(34, 39, 45);
+  --color__4: rgb(57,57,57);
 }
 
 html {
@@ -12,9 +13,7 @@ html {
 
 ::-webkit-scrollbar {
   width: 0;
-  /* Remove scrollbar space */
   background: transparent;
-  /* Optional: just make scrollbar invisible */
 }
 
 pre{
@@ -161,11 +160,10 @@ pre{
 }
 
 .alert-message {
-  background-color: rgb(57,57,57);
-  border-color: rgb(57,57,57);
-  color: white;
+  background-color: var(--color__4);
+  border-color: var(--color__4);
+  color: var(--color__1);;
   padding: 10px;
   border-radius: 10px;
-  /* margin-bottom:10px; */
   text-transform: lowercase;
 }
