@@ -1,8 +1,10 @@
 import { useState } from "react";
 import swal from 'sweetalert';
 import { CssNamedColors, FakeTemplates } from '../../inputcss';
+import CustomBtn from '../../utils/button';
 const extractor = require('css-color-extractor');
 const Color = require('easy-color');
+
 
 export default function CssTransformIndex() {
 
@@ -10,7 +12,6 @@ export default function CssTransformIndex() {
   const [outputCss, setOutputCss] = useState('');
   const [colorArr, setColorArr] = useState([]);
   const [fakeTemplateIndex, setFakeTemplateIndex] = useState(0);
-
 
   function handleTransform() {
     let tempCss = inputCss;
@@ -39,7 +40,6 @@ export default function CssTransformIndex() {
       <OutputCssJsx outputCss={outputCss} colorArr={colorArr} handleTransform={handleTransform} ></OutputCssJsx>
     </div>
   )
-
 
   function replaceColorWithVariableNameInCss(tempColors: any, colorIndex: number, tempCss: string, tempColorsArr: any) {
     tempColors.forEach((colorVal: any, index: number) => {
@@ -172,63 +172,65 @@ export default function CssTransformIndex() {
   }
 }
 
-
-
 function InputCssJsx(props) {
   return (
-    <div className="left-section">
-      <div className="section-header">
-        <div className="heading-primary">
-          Enter Your CSS 🌸
-        </div>
+
+    <div className="left-section gradient-box">
+      <div className="left-section--header" >
+        <h1 className="heading-primary gradient_animated_text">Enter Your CSS</h1>
         <div className="action-btns">
-          <button className="btn btn-primary" onClick={props.fakeTemplateChange}>
+          <CustomBtn onClick={props.fakeTemplateChange}>
             Use Fake CSS
-          </button>
-          <button className="margin-left-15px btn btn-primary" onClick={() => props.setInputCss('/* Paste Your Css */')}>
-            Paste Your Own
-          </button>
+          </CustomBtn>
+          <CustomBtn onClick={() => props.setInputCss('/* Paste Your Css */')}>
+            Paste Your CSS
+          </CustomBtn>
         </div>
       </div>
-      <textarea className="inputcss-textarea content-area" value={props.inputCss} onChange={e => props.setInputCss(e.target.value)} />
+      <div className="left-section--content" >
+        <textarea className="left-section--content--textarea" value={props.inputCss} onChange={e => props.setInputCss(e.target.value)} />
+      </div>
+
     </div>
+
   );
 }
 
 function OutputCssJsx(prop) {
   const { colorArr, handleTransform, outputCss } = prop;
 
-  return (<div className="right-section">
-    <div className="section-header">
-      <div className="heading-primary">
-        Dynamic CSS 🎉
+  return (
+    <div className="right-section gradient-box">
+      <div className="right-section--header" >
+        <h1 className="heading-primary gradient_animated_text">
+          Dynamic CSS
+        </h1>
+        <div className="action-btns">
+          <CustomBtn onClick={handleTransform}>
+            Make CSS Beutiful
+          </CustomBtn>
+          <CustomBtn onClick={copyToClipBoardOutputCss}>
+            Copy New CSS
+          </CustomBtn>
+        </div>
       </div>
-      <div className="action-btns">
-        <button className="btn btn-primary" onClick={handleTransform}>
-          🌈 Make CSS Beutiful
-        </button>
-        <button className="margin-left-15px btn btn-primary" onClick={copyToClipBoardOutputCss}>
-          ✅ Copy New CSS
-        </button>
+      <div className="right-section--content">
+        <pre id="finalContent" className="generated-css content-area slideInRight">
+          {outputCss.length > 0 && (
+            <>
+              {outputCssNotePoint()}
+              {<div>{`:root { \n`} </div>}
+              {renderColors('original')}<br />
+              {renderColors('rgba')}<br />
+              {renderColors('hsla')}<br />
+
+              {<div>{`}`} </div>}
+            </>
+          )}
+          {JSON.parse(JSON.stringify(outputCss, null, 2))}
+        </pre>
       </div>
-    </div>
-
-    <pre id="finalContent" className="generated-css content-area slideInRight">
-      {outputCss.length > 0 && (
-        <>
-          {outputCssNotePoint()}
-          {<div>{`:root { \n`} </div>}
-          {renderColors('original')}<br />
-          {renderColors('rgba')}<br />
-          {renderColors('hsla')}<br />
-
-          {<div>{`}`} </div>}
-        </>
-      )}
-      {JSON.parse(JSON.stringify(outputCss, null, 2))}
-    </pre>
-  </div>);
-
+    </div>);
 
   function copyToClipBoardOutputCss() {
     var copyText = document.getElementById("finalContent");
@@ -267,8 +269,6 @@ function OutputCssJsx(prop) {
       })}
 
     </>)
-
-
 
   }
 }

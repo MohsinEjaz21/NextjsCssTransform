@@ -2,7 +2,7 @@
   --color__1: rgba(255, 255, 255, 1);
   --color__2: rgb(65, 105, 224);
   --color__3: #272C35;
-  --color__4: rgb(57,57,57);
+  --color__4: rgb(57, 57, 57);
 }
 
 html {
@@ -16,7 +16,7 @@ html {
   background: transparent;
 }
 
-pre{
+pre {
   margin: 0;
 }
 
@@ -85,22 +85,29 @@ pre{
   padding: 10px;
 }
 
+.left-section-content {
+  padding: 15px 30px 20px 15px;
+  background: var(--color__3);
+  border: 1px solid var(--color__1);
+
+}
+
 .content-area {
   margin-top: 100px;
   font-size: 18px;
   min-height: 100vh;
-  padding: 20px 30px;
+  padding: 0;
   color: var(--color__1);
-  background:var(--color__3);
-  border: 1px solid var(--color__1);
+  background: var(--color__3);
+  border:none
 }
 
-.color-variables{
+.color-variables {
   min-width: 440px;
   display: block;
 }
 
-.floatLeft{
+.floatLeft {
   float: left;
 }
 
@@ -150,19 +157,20 @@ pre{
   }
 }
 
-.action-btns{
+.action-btns {
   display: flex;
   align-items: center;
 }
 
-.margin-left-15px{
+.margin-left-15px {
   margin-left: 15px;
 }
 
 .alert-message {
   background-color: var(--color__4);
   border-color: var(--color__4);
-  color: var(--color__1);;
+  color: var(--color__1);
+  ;
   padding: 10px;
   border-radius: 10px;
   text-transform: lowercase;
