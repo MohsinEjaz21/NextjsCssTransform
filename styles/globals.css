@@ -1,20 +1,20 @@
 :root {
   --color__1: rgba(255, 255, 255, 1);
   --color__2: rgb(65, 105, 224);
-  --color__3: #272C35;
+  --color__3: #272c35;
   --color__4: rgb(57, 57, 57);
 }
 
 html {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   overflow: scroll;
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0;
   background: transparent;
-}
+} */
 
 pre {
   margin: 0;
@@ -51,7 +51,7 @@ pre {
   color: var(--color__2);
   font-size: 1.2rem;
   font-weight: bold;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   border: 2px solid var(--color__1);
   border-radius: 5px;
   padding: 5px;
@@ -75,7 +75,6 @@ pre {
   align-items: center;
   justify-content: space-around;
   border: 1px solid var(--color__1);
-
 }
 
 .heading-primary {
@@ -89,7 +88,6 @@ pre {
   padding: 15px 30px 20px 15px;
   background: var(--color__3);
   border: 1px solid var(--color__1);
-
 }
 
 .content-area {
@@ -99,7 +97,7 @@ pre {
   padding: 0;
   color: var(--color__1);
   background: var(--color__3);
-  border:none
+  border: none;
 }
 
 .color-variables {
@@ -170,7 +168,6 @@ pre {
   background-color: var(--color__4);
   border-color: var(--color__4);
   color: var(--color__1);
-  ;
   padding: 10px;
   border-radius: 10px;
   text-transform: lowercase;
