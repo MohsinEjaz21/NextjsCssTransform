@@ -8,5 +8,4 @@
     "**/Thumbs.db": true,
     "**/*.zip": true
   },
-  "explorerExclude.backup": null
 }

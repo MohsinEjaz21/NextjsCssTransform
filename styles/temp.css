@@ -11,12 +11,23 @@
   --border: 1px solid var(--color__7);
 }
 
+@font-face {
+  font-family: "cornerstone";
+  src:
+    url("/fonts/cornerstone.woff2") format("woff2"),
+    url("/fonts/cornerstone.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
-  font-family: "Poppins", sans-serif;
-  overflow: scroll;
-  overflow-x: hidden;
+  font-family: "cornerstone", sans-serif;
   background: var(--color__4);
   color: var(--color__1);
+}
+
+#__next {
+  height: calc(100% - 20px) !important;
 }
 
 /* ::-webkit-scrollbar {
@@ -35,7 +46,7 @@ pre {
 
 .container {
   /* overflow: hidden; */
-  height: calc(100vh - 20px);
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 1fr;
@@ -54,7 +65,6 @@ pre {
 
 .left-section,
 .right-section {
-  height: calc(100% - 200px);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 120px 1fr;
@@ -67,6 +77,8 @@ pre {
 
 .left-section--header,
 .right-section--header {
+  position: sticky;
+  top: 0px;
   grid-area: header;
   display: flex;
   justify-content: space-between;
@@ -74,14 +86,12 @@ pre {
   padding: 10px 25px;
   border-bottom: var(--border);
   background-color: var(--color__2);
-  /* border-top: 3px solid #00deff; */
 }
 
 .left-section--content,
 .right-section--content {
-  /* height: calc(100% - 20px); */
-  padding: 0 16px;
-  overflow: auto;
+  padding-left: 16px;
+  overflow: hidden;
   grid-area: content;
 }
 
