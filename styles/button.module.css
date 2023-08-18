@@ -7,12 +7,11 @@
   font-size: 16px;
   font-weight: 500;
   color: white;
-  transition: all .5s ease-in-out;
+  transition: all 0.1s ease-in-out;
   background: linear-gradient(to right, #ff0080, #ff7300);
   margin: 7px;
-  animation: gradient 10s infinite cubic-bezier(.62, .28, .23, .99) both;
+  animation: gradient 10s infinite cubic-bezier(0.62, 0.28, 0.23, 0.99) both;
 }
-
 
 .customBtn:hover {
   animation: gradient 3s infinite;

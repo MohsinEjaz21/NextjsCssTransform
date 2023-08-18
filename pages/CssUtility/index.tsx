@@ -6,7 +6,7 @@ const extractor = require('css-color-extractor');
 const Color = require('easy-color');
 
 
-export default function CssTransformIndex() {
+export default function CssTransform() {
 
   const [inputCss, setInputCss] = useState(FakeTemplates[0]);
   const [outputCss, setOutputCss] = useState('');
@@ -281,7 +281,7 @@ function tempLogs(line) {
   if (line.indexOf('url(https://1.www.s81c.com/common/v17e/i/buttons/btn-sprite.png) no-repeat 0 0 transparent') > -1) {
     console.log(`
     line: ${line}
-    ${line.indexOf(':')} 
+    ${line.indexOf(':')}
     ${line.indexOf('{')}
     ${line.indexOf(':hover')}
     ${line.indexOf(':active')}

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import CssTransform from './CssUtility'
 
 const Home: NextPage = () => {
   return (
@@ -15,27 +15,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-
-          <Link href="/CssUtility" >
-            <a className={styles.card}>
-              <h3>Css Utility   &rarr;</h3>
-              <p>Transform your Raw Css to Variable based CSS.</p>
-            </a>
-          </Link>
-        </div>
-        <script>
-
-        </script>
-
+        <CssTransform />
       </main>
 
     </div>

@@ -3,7 +3,7 @@
   /* --color__2: rgb(65, 105, 224); */
   --color__2: #1b1b1b;
 
-  --color__3: #272C35;
+  --color__3: #272c35;
   --color__4: rgb(57, 57, 57);
   --color__5: #ff0080;
   --color__6: #ff7300;
@@ -12,7 +12,7 @@
 }
 
 html {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   overflow: scroll;
   overflow-x: hidden;
   background: var(--color__4);
@@ -28,19 +28,20 @@ pre {
   margin: 0;
 }
 
-.left-section, .right-section {
+.left-section,
+.right-section {
   border: var(--border);
 }
 
 .container {
+  /* overflow: hidden; */
   height: calc(100vh - 20px);
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 1fr;
   gap: 8px 0px;
   grid-auto-flow: row;
-  grid-template-areas:
-    "left-section right-section";
+  grid-template-areas: "left-section right-section";
 }
 
 .left-section {
@@ -51,8 +52,8 @@ pre {
   grid-area: right-section;
 }
 
-
-.left-section, .right-section {
+.left-section,
+.right-section {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 120px 1fr;
@@ -63,7 +64,8 @@ pre {
     "content";
 }
 
-.left-section--header, .right-section--header {
+.left-section--header,
+.right-section--header {
   grid-area: header;
   display: flex;
   justify-content: space-between;
@@ -74,10 +76,10 @@ pre {
   top: 0;
   background-color: var(--color__2);
   border-top: 3px solid #00deff;
-
 }
 
-.left-section--content, .right-section--content {
+.left-section--content,
+.right-section--content {
   padding: 10px;
   overflow: auto;
   grid-area: content;
@@ -122,10 +124,11 @@ pre {
   border-top: 3px solid #00deff;
 }
 
-.gradient-box:before, .gradient-box:after {
+.gradient-box:before,
+.gradient-box:after {
   content: "";
   position: absolute;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00deff), to(#FC00FF));
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00deff), to(#fc00ff));
   top: -3px;
   bottom: -3px;
   width: 3px;
